@@ -1,0 +1,52 @@
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Benchmark results
+benchmarks/results/
+
+# Qdrant data
+qdrant_data/
+
+# Claude Code local config (may contain approved commands with secrets)
+.claude/
+
+# HuggingFace cache
+.cache/
+
+# Model weights (downloaded at runtime)
+*.bin
+*.pt
+*.onnx
+*.safetensors

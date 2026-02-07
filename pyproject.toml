@@ -1,0 +1,77 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dhakira"
+version = "0.1.0"
+description = "Arabic-first agent memory system — reduce Arabic memory costs by 60-80%"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.10"
+authors = [
+    { name = "Hesham Haroun" },
+]
+keywords = ["arabic", "memory", "agent", "llm", "rag", "nlp"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Text Processing :: Linguistic",
+]
+dependencies = [
+    "pydantic>=2.0",
+    "pyarabic>=0.6",
+    "sentence-transformers>=3.0",
+    "transformers>=4.40",
+    "qdrant-client>=1.9",
+    "networkx>=3.0",
+    "rank-bm25>=0.2",
+    "openai>=1.30",
+]
+
+[project.optional-dependencies]
+anthropic = ["anthropic>=0.30"]
+bedrock = ["boto3>=1.28"]
+ollama = ["ollama>=0.3"]
+neo4j = ["neo4j>=5.0"]
+chromadb = ["chromadb>=0.5"]
+faiss = ["faiss-cpu>=1.8"]
+all = [
+    "anthropic>=0.30",
+    "boto3>=1.28",
+    "ollama>=0.3",
+    "neo4j>=5.0",
+    "chromadb>=0.5",
+    "faiss-cpu>=1.8",
+]
+benchmark = [
+    "tiktoken>=0.7",
+    "mem0ai>=0.1.0",
+    "python-dotenv>=1.0",
+]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "pytest-cov>=5.0",
+    "ruff>=0.4",
+]
+
+[project.urls]
+Homepage = "https://github.com/hesham-haroun/dhakira"
+Repository = "https://github.com/hesham-haroun/dhakira"
+Issues = "https://github.com/hesham-haroun/dhakira/issues"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
